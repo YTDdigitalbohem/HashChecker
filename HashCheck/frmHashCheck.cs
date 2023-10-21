@@ -1,21 +1,97 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Security.Cryptography;
+using System.Text;
 using System.Windows.Forms;
 
 
 namespace HashCheck
 {
-   
+
 
     public partial class frmHashCheck : Form
     {
         public frmHashCheck()
         {
             InitializeComponent();
+            UpdateListViewLayout();
             this.AllowDrop = true;
         }
+
+        private void frmHashCheck_Load(object sender, EventArgs e)
+        {
+            UpdateListViewLayout();
+        }
+
+        private void frmHashCheck_Resize(object sender, EventArgs e)
+        {
+            UpdateListViewLayout();
+        }
+
+        private void UpdateListViewLayout()
+        {
+            int formHeight = this.ClientSize.Height;
+
+            // Set lvFiles size
+            lvFiles.Size = new Size(this.ClientSize.Width - 5, formHeight / 2);
+
+            // Set lvFiles location to the top of the form
+            lvFiles.Location = new Point(0, 0);
+
+            // Calculate the available height for lvResults after accounting for btnHash
+            int availableHeightForLvResults = (formHeight - btnHash.Height) / 2;
+
+            // Set lvResults size
+            lvResults.Size = new Size(this.ClientSize.Width - 5, availableHeightForLvResults - 10);
+
+            // Set lvResults location below lvFiles
+            lvResults.Location = new Point(0, formHeight / 2);
+
+        }
+
+        private void lvResults_DoubleClick(object sender, EventArgs e)
+        {
+            StringBuilder csvContent = new StringBuilder();
+
+            int maxNameLength = 0;
+
+            foreach (ListViewItem item in lvResults.Items)
+            {
+                int nameLength = item.SubItems[0].Text.Length;
+                if (nameLength > maxNameLength)
+                {
+                    maxNameLength = nameLength;
+                }
+            }
+
+            foreach (ListViewItem item in lvResults.Items)
+            {
+                csvContent.Append(item.SubItems[0].Text.PadRight(maxNameLength, ' ') + "\t ,"); // Add a tabulation after each comma
+                for (int i = 1; i < item.SubItems.Count; i++)
+                {
+                    csvContent.Append(item.SubItems[i].Text + "\t,\t"); // Add a comma and tabulation after each item
+                }
+                csvContent.Length -= 3;  // Remove the last comma and two tabulations
+
+                csvContent.Append("\t;" + Environment.NewLine); // Add new line
+            }
+
+            string tempFilePath = Path.GetTempFileName().Replace("tmp", "csv");
+
+            try
+            {
+                File.WriteAllText(tempFilePath, csvContent.ToString());
+
+                Process.Start(tempFilePath);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("An error occurred: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
 
 
         private void lvFiles_DragEnter(object sender, DragEventArgs e)
@@ -32,17 +108,19 @@ namespace HashCheck
 
             string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
 
-            imageList1.ImageSize = new Size(16, 16); 
+            imageList1.ImageSize = new Size(16, 16);
 
             foreach (string filePath in files)
             {
                 string fileName = Path.GetFullPath(filePath);
 
                 Icon fileIcon = System.Drawing.Icon.ExtractAssociatedIcon(filePath);
-                imageList1.Images.Add(fileName, fileIcon); 
+                imageList1.Images.Add(fileName, fileIcon);
 
-                ListViewItem listItem = new ListViewItem(fileName);
-                listItem.ImageKey = fileName; 
+                ListViewItem listItem = new ListViewItem(fileName)
+                {
+                    ImageKey = fileName
+                };
                 lvFiles.Items.Add(listItem);
             }
 
@@ -92,14 +170,17 @@ namespace HashCheck
         private void btnHash_Click(object sender, EventArgs e)
         {
             lvResults.Clear();
-            
+            lvResults.FullRowSelect = true;
+
             //string[] columnNames = { "File Name", "MD5", "SHA1", "SHA256", "CRC32Int", "CRC32Hex" };
             string[] columnNames = { "FILENAME", "MD5", "SHA1", "SHA256", "SHA384", "SHA512", "CRC32" };
 
             foreach (string columnName in columnNames)
             {
-                ColumnHeader header = new ColumnHeader();
-                header.Text = columnName;
+                ColumnHeader header = new ColumnHeader
+                {
+                    Text = columnName
+                };
                 lvResults.Columns.Add(header);
             }
 

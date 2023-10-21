@@ -64,21 +64,22 @@
             this.lvResults.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lvResults.HideSelection = false;
-            this.lvResults.Location = new System.Drawing.Point(0, 120);
+            this.lvResults.Location = new System.Drawing.Point(0, 427);
             this.lvResults.Name = "lvResults";
             this.lvResults.Size = new System.Drawing.Size(1185, 191);
             this.lvResults.TabIndex = 1;
             this.lvResults.UseCompatibleStateImageBehavior = false;
             this.lvResults.View = System.Windows.Forms.View.Details;
+            this.lvResults.DoubleClick += new System.EventHandler(this.lvResults_DoubleClick);
             // 
             // btnHash
             // 
             this.btnHash.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.btnHash.Location = new System.Drawing.Point(0, 312);
-            this.btnHash.MaximumSize = new System.Drawing.Size(0, 27);
-            this.btnHash.MinimumSize = new System.Drawing.Size(100, 27);
+            this.btnHash.Location = new System.Drawing.Point(0, 621);
+            this.btnHash.MaximumSize = new System.Drawing.Size(0, 25);
+            this.btnHash.MinimumSize = new System.Drawing.Size(100, 25);
             this.btnHash.Name = "btnHash";
-            this.btnHash.Size = new System.Drawing.Size(1185, 27);
+            this.btnHash.Size = new System.Drawing.Size(1185, 25);
             this.btnHash.TabIndex = 2;
             this.btnHash.Text = "Calculate Hashes";
             this.btnHash.UseVisualStyleBackColor = true;
@@ -89,13 +90,15 @@
             this.AllowDrop = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1185, 339);
+            this.ClientSize = new System.Drawing.Size(1185, 646);
             this.Controls.Add(this.btnHash);
             this.Controls.Add(this.lvResults);
             this.Controls.Add(this.lvFiles);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "frmHashCheck";
             this.Text = "HASH CHECKSUM";
+            this.Load += new System.EventHandler(this.frmHashCheck_Load);
+            this.SizeChanged += new System.EventHandler(this.frmHashCheck_Resize);
             this.ResumeLayout(false);
 
         }
