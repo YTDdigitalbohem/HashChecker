@@ -113,8 +113,8 @@ namespace HashCheck
                 string md5 = hashes.MD5;
                 string sha1 = hashes.SHA1;
                 string sha256 = hashes.SHA256;
-                string sha384 = hashes.SHA256;
-                string sha512 = hashes.SHA256;
+                string sha384 = hashes.SHA384;
+                string sha512 = hashes.SHA512;
                 //string crc32int = hashes.CRC32Int.ToString();
                 string crc32hex = hashes.CRC32Hex.ToString();
 

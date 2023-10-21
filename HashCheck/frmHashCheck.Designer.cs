@@ -39,7 +39,8 @@
             // lvFiles
             // 
             this.lvFiles.AllowDrop = true;
-            this.lvFiles.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.lvFiles.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lvFiles.HideSelection = false;
             this.lvFiles.LargeImageList = this.imageList1;
             this.lvFiles.Location = new System.Drawing.Point(0, 0);
@@ -60,7 +61,8 @@
             // 
             // lvResults
             // 
-            this.lvResults.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.lvResults.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lvResults.HideSelection = false;
             this.lvResults.Location = new System.Drawing.Point(0, 120);
             this.lvResults.Name = "lvResults";
