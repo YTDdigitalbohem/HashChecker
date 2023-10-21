@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.IO;
+using System.Security.Cryptography;
 using System.Windows.Forms;
 
 
@@ -52,26 +53,38 @@ namespace HashCheck
         {
             HashValues hashes = new HashValues();
 
-            using (System.Security.Cryptography.MD5 md5 = System.Security.Cryptography.MD5.Create())
-            using (System.Security.Cryptography.SHA1 sha1 = System.Security.Cryptography.SHA1.Create())
-            using (System.Security.Cryptography.SHA256 sha256 = System.Security.Cryptography.SHA256.Create())
+            using (MD5 md5 = MD5.Create())
             using (FileStream stream = File.OpenRead(filePath))
             {
-                byte[] md5Hash = md5.ComputeHash(stream);
-                byte[] sha1Hash = sha1.ComputeHash(stream);
-                byte[] sha256Hash = sha256.ComputeHash(stream);
-                //UInt32 crc32HashInt = Crc32Calculator.CalculateCrc32Int(filePath);
-                string crc32HashHex = Crc32Calculator.CalculateCrc32Hex(filePath);
-
-                //hashes.MD5 = BitConverter.ToString(md5Hash).Replace("-", "").ToLower();
-                hashes.MD5 = BitConverter.ToString(md5Hash).ToLower();
-                //hashes.SHA1 = BitConverter.ToString(sha1Hash).Replace("-", "").ToLower();
-                hashes.SHA1 = BitConverter.ToString(sha1Hash).ToLower();
-                //hashes.SHA256 = BitConverter.ToString(sha256Hash).Replace("-", "").ToLower();
-                hashes.SHA256 = BitConverter.ToString(sha256Hash).ToLower();
-                //hashes.CRC32Int = crc32HashInt;
-                hashes.CRC32Hex = crc32HashHex;
+                hashes.MD5 = BitConverter.ToString(md5.ComputeHash(stream)).ToLower();
             }
+
+            using (SHA1 sha1 = SHA1.Create())
+            using (FileStream stream = File.OpenRead(filePath))
+            {
+                hashes.SHA1 = BitConverter.ToString(sha1.ComputeHash(stream)).ToLower();
+            }
+
+            using (SHA256 sha256 = SHA256.Create())
+            using (FileStream stream = File.OpenRead(filePath))
+            {
+                hashes.SHA256 = BitConverter.ToString(sha256.ComputeHash(stream)).ToLower();
+            }
+
+            using (SHA384 sha384 = SHA384.Create())
+            using (FileStream stream = File.OpenRead(filePath))
+            {
+                hashes.SHA384 = BitConverter.ToString(sha384.ComputeHash(stream)).ToLower();
+            }
+
+            using (SHA512 sha512 = SHA512.Create())
+            using (FileStream stream = File.OpenRead(filePath))
+            {
+                hashes.SHA512 = BitConverter.ToString(sha512.ComputeHash(stream)).ToLower();
+            }
+
+            string crc32HashHex = Crc32Calculator.CalculateCrc32Hex(filePath);
+            hashes.CRC32Hex = crc32HashHex;
 
             return hashes;
         }
@@ -81,7 +94,7 @@ namespace HashCheck
             lvResults.Clear();
             
             //string[] columnNames = { "File Name", "MD5", "SHA1", "SHA256", "CRC32Int", "CRC32Hex" };
-            string[] columnNames = { "FILENAME", "MD5", "SHA1", "SHA256", "CRC32" };
+            string[] columnNames = { "FILENAME", "MD5", "SHA1", "SHA256", "SHA384", "SHA512", "CRC32" };
 
             foreach (string columnName in columnNames)
             {
@@ -100,6 +113,8 @@ namespace HashCheck
                 string md5 = hashes.MD5;
                 string sha1 = hashes.SHA1;
                 string sha256 = hashes.SHA256;
+                string sha384 = hashes.SHA256;
+                string sha512 = hashes.SHA256;
                 //string crc32int = hashes.CRC32Int.ToString();
                 string crc32hex = hashes.CRC32Hex.ToString();
 
@@ -107,6 +122,8 @@ namespace HashCheck
                 resultItem.SubItems.Add(md5);
                 resultItem.SubItems.Add(sha1);
                 resultItem.SubItems.Add(sha256);
+                resultItem.SubItems.Add(sha384);
+                resultItem.SubItems.Add(sha512);
                 //resultItem.SubItems.Add(crc32int);
                 resultItem.SubItems.Add(crc32hex);
 
@@ -121,7 +138,8 @@ namespace HashCheck
         public string MD5 { get; set; }
         public string SHA1 { get; set; }
         public string SHA256 { get; set; }
-        //public UInt32 CRC32Int { get; set; }
+        public string SHA384 { get; set; }
+        public string SHA512 { get; set; }
         public string CRC32Hex { get; set; }
     }
 }
