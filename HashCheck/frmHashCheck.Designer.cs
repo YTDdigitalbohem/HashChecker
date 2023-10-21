@@ -41,6 +41,8 @@
             this.lvFiles.AllowDrop = true;
             this.lvFiles.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.lvFiles.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("lvFiles.BackgroundImage")));
+            this.lvFiles.BackgroundImageTiled = true;
             this.lvFiles.HideSelection = false;
             this.lvFiles.LargeImageList = this.imageList1;
             this.lvFiles.Location = new System.Drawing.Point(0, 0);
@@ -63,6 +65,7 @@
             // 
             this.lvResults.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.lvResults.GridLines = true;
             this.lvResults.HideSelection = false;
             this.lvResults.Location = new System.Drawing.Point(0, 427);
             this.lvResults.Name = "lvResults";

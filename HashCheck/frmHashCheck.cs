@@ -66,16 +66,25 @@ namespace HashCheck
                 }
             }
 
+            // Add column names
+            csvContent.Append("FileName".PadRight(maxNameLength, ' ') + " \t , \t ");
+            for (int i = 1; i < lvResults.Columns.Count; i++)
+            {
+                csvContent.Append(lvResults.Columns[i].Text + " \t , \t ");
+            }
+            csvContent.Length -= 3;  // Remove the last comma and two tabulations
+            csvContent.Append(" \t ; " + Environment.NewLine);
+
             foreach (ListViewItem item in lvResults.Items)
             {
-                csvContent.Append(item.SubItems[0].Text.PadRight(maxNameLength, ' ') + "\t ,"); // Add a tabulation after each comma
+                csvContent.Append(item.SubItems[0].Text.PadRight(maxNameLength, ' ') + " \t , \t ");
                 for (int i = 1; i < item.SubItems.Count; i++)
                 {
-                    csvContent.Append(item.SubItems[i].Text + "\t,\t"); // Add a comma and tabulation after each item
+                    csvContent.Append(item.SubItems[i].Text + " \t , \t ");
                 }
                 csvContent.Length -= 3;  // Remove the last comma and two tabulations
 
-                csvContent.Append("\t;" + Environment.NewLine); // Add new line
+                csvContent.Append("\t;" + Environment.NewLine);
             }
 
             string tempFilePath = Path.GetTempFileName().Replace("tmp", "csv");
@@ -104,6 +113,7 @@ namespace HashCheck
 
         private void lvFiles_DragDrop(object sender, DragEventArgs e)
         {
+            lvFiles.BackgroundImage = null;
             lvFiles.Clear();
 
             string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
@@ -173,7 +183,7 @@ namespace HashCheck
             lvResults.FullRowSelect = true;
 
             //string[] columnNames = { "File Name", "MD5", "SHA1", "SHA256", "CRC32Int", "CRC32Hex" };
-            string[] columnNames = { "FILENAME", "MD5", "SHA1", "SHA256", "SHA384", "SHA512", "CRC32" };
+            string[] columnNames = { "FILENAME", "CRC32", "MD5", "SHA1", "SHA256", "SHA384", "SHA512"  };
 
             foreach (string columnName in columnNames)
             {
@@ -200,13 +210,14 @@ namespace HashCheck
                 string crc32hex = hashes.CRC32Hex.ToString();
 
                 ListViewItem resultItem = new ListViewItem(fileName);
+                resultItem.SubItems.Add(crc32hex);
                 resultItem.SubItems.Add(md5);
                 resultItem.SubItems.Add(sha1);
                 resultItem.SubItems.Add(sha256);
                 resultItem.SubItems.Add(sha384);
                 resultItem.SubItems.Add(sha512);
                 //resultItem.SubItems.Add(crc32int);
-                resultItem.SubItems.Add(crc32hex);
+                
 
                 lvResults.Items.Add(resultItem);
             }
