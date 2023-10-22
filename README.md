@@ -1,3 +1,5 @@
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/W7W5Q3P7Q)
+
 # HashChecker
 MD5, SHA  &amp; CRC hash checker made using WinForms .net C#
 with csv file export
